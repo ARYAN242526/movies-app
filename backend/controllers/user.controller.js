@@ -54,13 +54,13 @@ const loginUser = asyncHandler(async(req,res) => {
         throw new ApiError(400 , "User does not exist");
     }
 
-    const isPasswordValid = bcrypt.compare(password , user.password);
+    const isPasswordValid = await bcrypt.compare(password , user.password);
 
     if(!isPasswordValid){
-       throw new ApiError(400 , "invalid credentials")
+       throw new ApiError(400 , "Invalid credentials")
     }
 
-    const {token} = createToken(res , user._id);
+    const token = createToken(res , user._id);
 
     const loggedInUser = await User.findById(user._id).select("-password");
 
@@ -68,10 +68,7 @@ const loginUser = asyncHandler(async(req,res) => {
 
     return res
              .status(201)
-             .cookie("token" , token)
-             .json(new ApiResponse(201 , {
-                user : {loggedInUser , token}
-             } , "User logged in successfully"))
+             .json(new ApiResponse(201 ,loggedInUser, "User logged in successfully"))
 
 })
 

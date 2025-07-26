@@ -1,12 +1,15 @@
 import jwt from 'jsonwebtoken';
+import { User } from '../models/user.model.js';
 
 
-const createToken  = (res, userId) => {
+const createToken  =  async (res, userId) => {
     const token = jwt.sign(
         {userId} ,
         process.env.JWT_SECRET,
         {expiresIn : "30d"}
     )
+
+    await User.findByIdAndUpdate(userId , {token} , {new : true})
 
     res.cookie("token" , token , {
         httpOnly : true,
