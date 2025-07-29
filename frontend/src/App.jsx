@@ -1,8 +1,18 @@
-import React from 'react'
+import { Outlet } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
+import Navigation from './pages/Auth/Navigation'
 
 function App() {
   return (
-    <h1 className='text-3xl font-bold underline text-teal-200'>Movies App</h1>
+    <>
+     <ToastContainer/>
+     <Navigation/>
+     <main className='py-3'>
+      <Outlet/>
+     </main>
+    </>
+  
   )
 }
 
