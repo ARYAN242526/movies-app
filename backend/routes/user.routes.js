@@ -8,13 +8,13 @@ import {
        updateCurrentUserProfile
       } from "../controllers/user.controller.js";
 
-import { authenticate , isAdmin } from "../middlewares/auth.middleware.js";
+import { authenticate , authorizeAdmin } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router
       .route('/')
       .post(createUser)
-      .get(authenticate ,isAdmin,getAllUsers)
+      .get(authenticate , authorizeAdmin, getAllUsers)
 
 
 router.post('/auth' , loginUser);

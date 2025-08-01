@@ -25,7 +25,7 @@ const authenticate = asyncHandler(async(req, res , next) => {
 
 // check if the user is admin or not
 
-const isAdmin = async(req,res ,next) => {
+const authorizeAdmin = async(req,res ,next) => {
     if(req.user && req.user.isAdmin){
         next();
     } else {
@@ -33,4 +33,4 @@ const isAdmin = async(req,res ,next) => {
     }
 }
 
-export {authenticate , isAdmin}
+export {authenticate , authorizeAdmin}
