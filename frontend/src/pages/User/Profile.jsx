@@ -16,14 +16,21 @@ const Profile = () => {
     const [updateProfile , {isLoading : loadingUpdateProfile}] = useProfileMutation();
 
     useEffect(() => {
-        setUsername(userInfo.username || '')
-        setEmail(userInfo.email || '')
-    } , [userInfo]);
+        if(userInfo){
+          setUsername(userInfo?.username ?? '');
+          setEmail(userInfo?.email ?? '');
+        }
+    } , [userInfo.username , userInfo.email]);
 
     const dispatch = useDispatch();
 
-  const submitHandler = async (e) => {
+    const submitHandler = async (e) => {
     e.preventDefault();
+
+    if(!username || !email){
+      toast.error("Username and email are required");
+      return;
+    }
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
@@ -42,6 +49,8 @@ const Profile = () => {
       }
     }
   };
+
+  if(!userInfo) return <Loader />;
 
 
   return (
