@@ -74,7 +74,7 @@ const listGenres = asyncHandler(async(req,res) => {
     const genres = await Genre.find({});
 
     if(!genres){
-        throw new ApiError(400 , "Gneres not found")
+        throw new ApiError(400 , "Genres not found")
     }
 
     return res
