@@ -9,7 +9,6 @@ const createToken  =  async (res, userId) => {
         {expiresIn : "30d"}
     )
 
-    await User.findByIdAndUpdate(userId , {token} , {new : true})
 
     res.cookie("token" , token , {
         httpOnly : true,

@@ -69,7 +69,13 @@ const loginUser = asyncHandler(async(req,res) => {
 
     return res
              .status(201)
-             .json(new ApiResponse(201 ,loggedInUser, "User logged in successfully"))
+             .json(new ApiResponse(201 ,{
+                _id : loggedInUser._id,
+                username : loggedInUser.username,
+                email : loggedInUser.email,
+                isAdmin : loggedInUser.isAdmin,
+                token : user.token
+             }, "User logged in successfully"))
 
 })
 
@@ -113,7 +119,12 @@ const getCurrentUserProfile = asyncHandler(async(req,res) => {
 
     return res
              .status(200)
-             .json(new ApiResponse(200 , user , "Current User Profile fetched"))
+             .json(new ApiResponse(200 , {
+                _id : user._id,
+                username : user.username,
+                email : user.email,
+                isAdmin : user.isAdmin,
+             } , "Current User Profile fetched"))
 
 })
 

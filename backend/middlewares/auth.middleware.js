@@ -7,7 +7,7 @@ import { ApiError } from '../utils/ApiError.js';
 // check if the user is authenticated or not
 const authenticate = asyncHandler(async(req, res , next) => {
 
-    let token = req.cookies.token;
+    const token = req.cookies.token;
 
     if(token){
         try {
@@ -19,7 +19,7 @@ const authenticate = asyncHandler(async(req, res , next) => {
            throw new ApiError(401 , "Token failed") 
         }
     } else{
-        throw new ApiError(400 , "No token found");
+        throw new ApiError(400 , "Not authorized, no token");
     }
 })
 
