@@ -1,6 +1,5 @@
 import { apiSlice } from "./apiSlice";
 import { USERS_URL } from "../constants";
-import { data } from "react-router";
 
 
 export const userApiSlice = apiSlice.injectEndpoints({

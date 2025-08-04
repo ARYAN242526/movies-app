@@ -1,5 +1,5 @@
 import { useState , useEffect} from "react";
-import {Link ,redirect,useLocation , useNavigate} from 'react-router-dom'
+import {Link ,useLocation , useNavigate} from 'react-router-dom'
 import { useDispatch , useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { useLoginMutation } from "../../redux/api/users";
@@ -12,7 +12,7 @@ const Login = () => {
   const [password ,setPassword] = useState("")
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [login , {isLoading}] = useLoginMutation()
 
@@ -34,7 +34,9 @@ const Login = () => {
 
     try {
       const res = await login({email , password}).unwrap();
-      dispatch(setCredentials({...res}))
+      console.log("login response : " , res.data);
+      
+      dispatch(setCredentials(res.data));
       navigate(redirect)
     } catch (err) {
       toast.error(err?.data?.message || err.error);

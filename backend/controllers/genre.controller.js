@@ -42,18 +42,12 @@ const updateGenre = asyncHandler(async(req,res) => {
         throw new ApiError(400 , "Genre not found");
     }
 
-    const updatedGenre = await Genre.findByIdAndUpdate(
-        genreId , {
-            $set : {
-                name : name
-            }
-        },
-        {new : true}
-    );
+   genre.name = name;
+   await genre.save();
 
     return res
              .status(200)
-             .json(new ApiResponse(200 ,updatedGenre, "Genre updated successfully"))
+             .json(new ApiResponse(200 ,genre, "Genre updated successfully"))
 });
 
 const removeGenre = asyncHandler(async(req,res) => {
