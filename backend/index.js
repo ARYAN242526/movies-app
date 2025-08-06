@@ -6,6 +6,7 @@ import path from "path";
 import connectDB from './config/db.js';
 import userRoutes from './routes/user.routes.js';
 import genreRoutes from './routes/genre.routes.js';
+import movieRoutes from './routes/movie.routes.js';
 
 
 // Configuration
@@ -25,6 +26,7 @@ const PORT = process.env.PORT || 3000;
 // Routes
 app.use('/api/v1/users' , userRoutes);
 app.use('/api/v1/genre' , genreRoutes);
+app.use('/api/v1/movies' , movieRoutes);
 
 
 app.listen(PORT, () => {
