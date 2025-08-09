@@ -86,9 +86,34 @@ const updateMovie = asyncHandler(async(req,res) => {
              .json(new ApiResponse(200 , updatedMovie , "Movie updated successfully"));
 });
 
-// const movieReview = asyncHandler(async(req,res) => {
+const movieReview = asyncHandler(async(req,res) => {
+    const {rating , comment} = req.body;
+    const movie = await Movie.findById(req.params.id);
 
-// })
+    if(movie){
+        const alreadyReviewed = movie.reviews.find(
+            (r) => r.user.toString() === req.user._id.toString()
+        );
+        if(alreadyReviewed){
+            throw new ApiError(400 , "Movie already reviewed");
+        }
+
+        const review = {
+            name : req.user.username,
+            rating : Number(rating),
+            comment,
+            user : req.user._id
+        }
+
+        movie.reviews.push(review);
+        movie.numReviews = movie.reviews.length
+        movie.rating = movie.reviews.reduce((acc , item) => item.rating + acc , 0)/movie.reviews.length;
+
+        await movie.save();
+
+        return res.status(200).json(new ApiResponse(200 ,movie ,  "Movie review done"));
+    }
+})
 
 const deleteMovie = asyncHandler(async(req,res) => {
     const {movieId} = req.params;
@@ -109,5 +134,6 @@ export {
     getAllMovies,
     getSpecificMovie,
     updateMovie,
-    deleteMovie
+    deleteMovie,
+    movieReview
 }
