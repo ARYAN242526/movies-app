@@ -5,7 +5,7 @@ import { authenticate , authorizeAdmin } from "../middlewares/auth.middleware.js
 import checkId from "../middlewares/checkId.js";
 
 // controllers
-import { createMovie, deleteMovie, getAllMovies , getSpecificMovie, updateMovie , movieReview} from "../controllers/movie.controller.js";
+import { createMovie, deleteMovie, getAllMovies , getSpecificMovie, updateMovie , movieReview, getNewMovies, getTopMovies, getRandomMovies} from "../controllers/movie.controller.js";
 
 
 const router = Router();
@@ -13,6 +13,9 @@ const router = Router();
 // Public routes
 router.get('/all-movies' , getAllMovies);
 router.get('/specific-movie/:movieId' , getSpecificMovie);
+router.get('/new-movies' , getNewMovies);
+router.get('/top-movies' , getTopMovies);
+router.get('/random-movies' , getRandomMovies);
 
 // Restricted routes
 router.post('/:id/reviews', authenticate , authorizeAdmin , checkId , movieReview);

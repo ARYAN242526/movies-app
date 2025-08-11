@@ -129,11 +129,49 @@ const deleteMovie = asyncHandler(async(req,res) => {
               .json(new ApiResponse(200 , {} , "Movie deleted successfully"));
 })
 
+const getNewMovies = asyncHandler(async(req,res) => {
+    const newMovies = await Movie.find().sort({createdAt : -1 }).limit(10);
+
+    if(!newMovies){
+        throw new ApiError(400 , "Movies not found");
+    }
+
+    return res
+              .status(200)
+              .json(new ApiResponse(200 , newMovies , "Movies fetched successfully"));
+})
+
+const getTopMovies = asyncHandler(async(req,res) => {
+    const topRatedMovies = await Movie.find().sort({numReviews : -1}).limit(10);
+
+    if(!topRatedMovies){
+        throw new ApiError(400 , "Movies with top rating not found");
+    }
+
+    return res
+              .status(200)
+              .json(new ApiResponse(200 , topRatedMovies , "Top Rated Movies fetched successfully"));
+})
+
+const getRandomMovies = asyncHandler(async(req,res) => {
+    const randomMovies = await Movie.aggregate([{$sample : {size : 10}}]);
+    
+    if(!randomMovies){
+        throw new ApiError(400 , "Movies not found");
+    }
+
+    return res
+              .status(200)
+              .json(new ApiResponse(200 , randomMovies , "Movies fetched successfully"));
+})
 export {
     createMovie,
     getAllMovies,
     getSpecificMovie,
     updateMovie,
     deleteMovie,
-    movieReview
+    movieReview,
+    getNewMovies,
+    getTopMovies,
+    getRandomMovies
 }
