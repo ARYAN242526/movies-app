@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 import userRoutes from './routes/user.routes.js';
 import genreRoutes from './routes/genre.routes.js';
 import movieRoutes from './routes/movie.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
 
 
 // Configuration
@@ -27,6 +28,12 @@ const PORT = process.env.PORT || 3000;
 app.use('/api/v1/users' , userRoutes);
 app.use('/api/v1/genre' , genreRoutes);
 app.use('/api/v1/movies' , movieRoutes);
+app.use('/api/v1/upload' , uploadRoutes);
+
+
+const __dirname = path.resolve();
+app.use('/uploads' , express.static(path.join(__dirname + '/uploads')));
+
 
 
 app.listen(PORT, () => {
