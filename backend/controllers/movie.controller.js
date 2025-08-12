@@ -164,6 +164,37 @@ const getRandomMovies = asyncHandler(async(req,res) => {
               .status(200)
               .json(new ApiResponse(200 , randomMovies , "Movies fetched successfully"));
 })
+
+const deleteComment = asyncHandler(async(req,res) => {
+    const {movieId , reviewId} = req.body;
+
+    const movie = await Movie.findById(movieId);
+
+    if(!movie){
+        throw new ApiError(400 , "Movie not found");
+    }
+
+    const reviewIndex = movie.reviews.findIndex(
+        (r) => r._id.toString() === reviewId
+    );
+
+    if(reviewIndex === -1){
+        throw new ApiError(400 , "Comment not found");
+    }
+
+    movie.reviews.splice(reviewIndex , 1)
+    movie.numReviews = movie.reviews.length
+    movie.rating = movie.reviews.length > 0
+      ? movie.reviews.reduce((acc, item) => item.rating + acc , 0) / movie.reviews.length : 0;
+
+    await movie.save();
+
+    return res
+             .status(200)
+             .json(new ApiResponse(200 , {} , "Comment deleted successfully"));
+
+
+})
 export {
     createMovie,
     getAllMovies,
@@ -173,5 +204,6 @@ export {
     movieReview,
     getNewMovies,
     getTopMovies,
-    getRandomMovies
+    getRandomMovies,
+    deleteComment
 }
