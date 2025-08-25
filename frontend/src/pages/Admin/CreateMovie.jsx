@@ -32,7 +32,8 @@ const CreateMovie = () => {
     { isLoading: isUploadingImage, error: uploadImageErrorDetails },
   ] = useUploadImageMutation();
 
-  const { data: genres, isLoading: isLoadingGenres } = useFetchGenresQuery();
+  const { data: genresResponse, isLoading: isLoadingGenres } = useFetchGenresQuery();
+  const genres = genresResponse?.data || [];
 
   useEffect(() => {
     if (genres) {
@@ -186,7 +187,7 @@ const CreateMovie = () => {
               {isLoadingGenres ? (
                 <option>Loading genres...</option>
               ) : (
-                genres.map((genre) => (
+                (genres || []).map((genre) => (
                   <option key={genre.id} value={genre.id}>
                     {genre.name}
                   </option>

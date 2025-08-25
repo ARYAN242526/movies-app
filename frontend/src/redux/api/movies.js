@@ -45,7 +45,7 @@ export const moviesApiSlice = apiSlice.injectEndpoints({
             query : (id) => `${MOVIE_URL}/specific-movie/${id}`,
         }),
 
-        uplaodImage : builder.mutation({
+        uploadImage : builder.mutation({
             query : (formData) => ({
                 url : `${UPLOAD_URL}`,
                 method : 'POST',

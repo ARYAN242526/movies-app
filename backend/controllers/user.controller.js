@@ -6,7 +6,6 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { createToken } from "../utils/createToken.js";
 
 
-
 const createUser = asyncHandler(async(req,res) => {
     const {username , email , password , isAdmin} = req.body;
 
@@ -30,15 +29,20 @@ const createUser = asyncHandler(async(req,res) => {
             isAdmin
        })
        
-       const createdUser = await User.findById(user._id).select("-password")
 
-       if(!createdUser){
+
+       if(!user){
         throw new ApiError(400 , "Error while creating user")
        }
 
        return res
                  .status(201)
-                 .json(new ApiResponse(201 , createdUser , "user created successfully"));
+                 .json(new ApiResponse(201 , {
+                    _id : user._id,
+                    username : user.username,
+                    email : user.email,
+                    isAdmin : user.isAdmin,
+                 } , "user created successfully"));
    
 })
 
@@ -74,7 +78,7 @@ const loginUser = asyncHandler(async(req,res) => {
                 username : loggedInUser.username,
                 email : loggedInUser.email,
                 isAdmin : loggedInUser.isAdmin,
-                token : user.token
+                token : token,
              }, "User logged in successfully"))
 
 })
