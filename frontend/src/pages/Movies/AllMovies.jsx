@@ -14,7 +14,7 @@ import {
   setMovieYears,
   setUniqueYears,
 } from '../../redux/features/movies/moviesSlice';
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 const AllMovies = () => {
   const dispatch = useDispatch();
@@ -27,16 +27,21 @@ const AllMovies = () => {
 
   const {moviesFilter , filteredMovies} = useSelector((state) => state.movies);
 
-  const movieYears = movies.map((movie) => movie.year);
-  const uniqueYears = Array.from(new Set(movieYears)); 
-
+  // Unique years (sorted newest first)
+  const uniqueYears = useMemo(() => {
+    const years = [...new Set(movies.map((m) => m.year))];
+    return years.sort((a, b) => b - a);
+  }, [movies]);
 
   useEffect(() => {
-    dispatch(setFilteredMovies(movies || []));
-    dispatch(setMovieYears(movieYears));
-    dispatch(setUniqueYears(uniqueYears));
-  } , [movies, dispatch])
+  if (movies.length > 0) {
 
+    dispatch(setMovieYears(movies.map((m) => m.year)));
+    dispatch(setUniqueYears(uniqueYears));
+    dispatch(setFilteredMovies(movies));
+  }
+  }, [movies,uniqueYears , dispatch]);
+  
   const handleSearchChange = (e) => {
     dispatch(setMoviesFilter({searchTerm : e.target.value}));
 
@@ -53,7 +58,9 @@ const AllMovies = () => {
   };
 
    const handleYearChange = (year) => {
-    const filterByYear = movies.filter((movie) => movie.year === Number(year));
+    const filterByYear = movies.filter(
+      (movie) => movie.year === Number(year)
+    );
     dispatch(setFilteredMovies(filterByYear));
   };
 
@@ -69,7 +76,7 @@ const AllMovies = () => {
         dispatch(setFilteredMovies(randomMovies?.data || []))
         break;
       default : 
-      dispatch(setFilteredMovies([]));
+      dispatch(setFilteredMovies(movies));
       break;
     }
   }

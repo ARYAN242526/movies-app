@@ -14,7 +14,6 @@ const MovieDetails = () => {
     const [rating ,setRating] = useState(0);
     const [comment , setComment] = useState("");
     const {data : movie ,error, isLoading ,  refetch} = useGetSpecificMovieQuery(movieId);
-    console.log(movie);
     
     const {userInfo} = useSelector((state) => state.auth);
     const [createReview , {isLoading : loadingMovieReview}] = useAddMovieReviewMutation();
